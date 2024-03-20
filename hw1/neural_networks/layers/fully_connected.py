@@ -35,17 +35,16 @@ class FullyConnected(Module):
         self.n_in = X_shape[1]
 
         ### BEGIN YOUR CODE ###
-        W = ...  # 利用init_weights初始化权重
-        b = ...  # 初始化偏置
+        W = self.init_weights(X_shape)  # 利用init_weights初始化权重
+        b = b = np.zeros((1, self.n_out))  # 初始化偏置
 
         dW = np.zeros_like(W)
         db = np.zeros_like(b)
 
         self.parameters = OrderedDict({"W": W, "b": b})
-        self.cache: OrderedDict = ...   # 反向传播你需要什么？
+        self.cache: OrderedDict =OrderedDict({"Z": None, "X": None})  # 反向传播你需要什么？
         # 把梯度初始化为0即可
-        self.gradients: OrderedDict = ...
-
+        self.gradients: OrderedDict =  OrderedDict({'dW':dW,'db':b}) 
         ### END YOUR CODE ###
 
     def forward(self, X: np.ndarray) -> np.ndarray:
@@ -63,7 +62,7 @@ class FullyConnected(Module):
         # initialize layer parameters if they have not been initialized
         if self.n_in is None:
             self._init_parameters(X.shape)
-
+        
         ### BEGIN YOUR CODE ###
 
         # 计算矩阵相乘，与经过激活函数后的值
