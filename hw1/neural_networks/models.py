@@ -95,9 +95,10 @@ class NeuralNetwork(ABC):
         """
         ### YOUR CODE HERE ###
         # 前向传播，提示，应该只需要一个for循环即可，两行
+        for layer in self.layers:
+            X = layer.forward(X)
 
-
-        return ...
+        return X
 
     def backward(self, dLoss: np.ndarray) -> None:
         """反向传播
@@ -109,7 +110,9 @@ class NeuralNetwork(ABC):
         """
         ### YOUR CODE HERE ###
         # 将梯度反传，提示，应该只需要一个for循环即可，两行
-
+        for layer in reversed(self.layers):
+            dLoss = layer.backward(dLoss)
+        return dLoss
 
 
     def update(self) -> None:

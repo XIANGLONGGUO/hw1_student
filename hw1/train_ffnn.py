@@ -12,7 +12,7 @@ fc1 = AttrDict(
     {
         "activation": "relu",
         "weight_init": "xavier_uniform",
-        "n_out": 25,
+        "n_out": 30,
     }
 )
 
@@ -129,7 +129,7 @@ dataset = initialize_dataset(
 Step 7: Train model!
 """
 
-epochs = 100
+epochs = 150
 
 print(
     "Training {} neural network on {} with {} for {} epochs...".format(

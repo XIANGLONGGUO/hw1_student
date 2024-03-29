@@ -41,11 +41,9 @@ class Identity(Activation):
         super().__init__()
 
     def forward(self, Z: np.ndarray) -> np.ndarray:
-        Z=np.maximum(0,Z)
         return Z
 
     def backward(self, dY: np.ndarray) -> np.ndarray:
-        dY=np.where(dY > 0, dY, 0)
         return dY
 
 

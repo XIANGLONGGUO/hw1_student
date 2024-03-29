@@ -8,6 +8,7 @@ Website: github.com/sophiaas
 
 import numpy as np
 import math
+import os
 
 def initialize_dataset(
     name,
@@ -15,14 +16,16 @@ def initialize_dataset(
 ):
 
     if name == "iris":
-        training_set = np.load('datasets/iris/iris_train_data.npy')
-        training_labels = np.load('datasets/iris/iris_train_labels.npy')
+        #print(os.listdir('.'))
+        #os.chdir('./hw1')
+        training_set = np.load('./datasets/iris/iris_train_data.npy')
+        training_labels = np.load('./datasets/iris/iris_train_labels.npy')
 
-        validation_set = np.load('datasets/iris/iris_val_data.npy')
-        validation_labels = np.load('datasets/iris/iris_val_labels.npy')
+        validation_set = np.load('./datasets/iris/iris_val_data.npy')
+        validation_labels = np.load('./datasets/iris/iris_val_labels.npy')
 
-        test_set = np.load('datasets/iris/iris_test_data.npy')
-        test_labels = np.load('datasets/iris/iris_test_labels.npy')
+        test_set = np.load('./datasets/iris/iris_test_data.npy')
+        test_labels = np.load('./datasets/iris/iris_test_labels.npy')
 
         dataset = Dataset(
             training_set=training_set,

@@ -35,7 +35,7 @@ class FullyConnected(Module):
         self.n_in = X_shape[1]
 
         ### BEGIN YOUR CODE ###
-        W = self.init_weights(X_shape)  # 利用init_weights初始化权重
+        W = self.init_weights((self.n_in, self.n_out))  # 利用init_weights初始化权重
         b = b = np.zeros((1, self.n_out))  # 初始化偏置
 
         dW = np.zeros_like(W)
@@ -44,7 +44,7 @@ class FullyConnected(Module):
         self.parameters = OrderedDict({"W": W, "b": b})
         self.cache: OrderedDict =OrderedDict({"Z": None, "X": None})  # 反向传播你需要什么？
         # 把梯度初始化为0即可
-        self.gradients: OrderedDict =  OrderedDict({'dW':dW,'db':b}) 
+        self.gradients: OrderedDict =  OrderedDict({'W':dW,'b':b}) 
         ### END YOUR CODE ###
 
     def forward(self, X: np.ndarray) -> np.ndarray:
@@ -60,20 +60,16 @@ class FullyConnected(Module):
         输出张量 (batch_size, output_dim)
         """
         # initialize layer parameters if they have not been initialized
+        # 计算矩阵相乘，与经过激活函数后的值
         if self.n_in is None:
             self._init_parameters(X.shape)
-        
-        ### BEGIN YOUR CODE ###
-
-        # 计算矩阵相乘，与经过激活函数后的值
-
-
+        z=np.dot(X,self.parameters['W'])+self.parameters['b']
+        out=self.activation(z)
         # 把反向传播需要的东西存储在cache中
+        self.cache['Z']=z
 
-
-        ### END YOUR CODE ###
-
-        return ...
+        self.cache['X']=X
+        return out
 
     def backward(self, dLdY: np.ndarray) -> np.ndarray:
         """反向传播实现。
@@ -93,17 +89,20 @@ class FullyConnected(Module):
         ### BEGIN YOUR CODE ###
 
         # 从cache中获取需要的张量
-
+        z,X=self.cache['Z'],self.cache['X']
         # 计算梯度
-
+        z,X=self.cache['Z'],self.cache['X']
+        dLdZ=self.activation.backward(dLdY)
+        dX=dLdZ.dot(self.parameters['W'].T)
 
         # 把梯度存在self.gradients中
         # 权重W的梯度应当存在self.gradients['W']中，偏置b同理
-
+        self.gradients['W']=X.T.dot(dLdZ)
+        self.gradients['b']=np.sum(dLdZ,axis=0)
         ### END YOUR CODE ###
 
-        return ...
 
+        return dX
     def clear_gradients(self) -> None:
         self.cache = OrderedDict({a: [] for a, b in self.cache.items()})
         self.gradients = OrderedDict(
